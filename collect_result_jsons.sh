@@ -12,7 +12,9 @@ if [ ! -d $resultdir ]; then
   exit 1
 fi
 
-mkdir -p $resultdir/agg 
+
+set -x
+
 basedir=$(pwd)
 
 
@@ -40,8 +42,14 @@ basedir=$(pwd)
 # with open(f'agg_{result_filename}.json', 'w') as f:
 #    json.dump(data, f, indent=2)
 
+
+for task in 1k1k 1k8k 8k1k; do  
+
+mkdir -p $resultdir/agg_$task 
+
+
 cd $resultdir
-filename=$(basename $(ls *.json | head -n 1))
+filename=$(basename $(ls *$task*.json | head -n 1))
 
 model=$(echo $filename | cut -d '_' -f 1 )
 seqlens=$(echo $filename | cut -d '_' -f 2)
@@ -50,9 +58,11 @@ framework=$(echo $filename | cut -d '_' -f 4)
 hw=$(basename $filename .json | rev | cut -d '_' -f 1 | rev)
 tp_size=$(basename $filename .json | rev | cut -d '_' -f 3 | rev | sed -r 's/[^0-9]+//g')
 
-for result_filename in *.json ; do 
+
+
+for result_filename in *$task*.json ; do 
     python3 $basedir/utils/process_result.py $hw $tp_size $(basename $result_filename .json) $framework $precision
-    mv agg_${result_filename} agg/
+    mv agg_${result_filename} agg_${task}/
 done
 
 cd $basedir
@@ -76,8 +86,10 @@ cd $basedir
 
 mkdir -p $resultdir/json
 cd $resultdir/json
-python3 $basedir/utils/collect_results.py ../agg/ ${model}_${seqlens}
+python3 $basedir/utils/collect_results.py ../agg_${task}/ ${model}_${seqlens}
 
 cd $basedir
+done
+
 echo "Results collected to"
-find $resultdir/json/ -name "agg_${model}_${seqlens}*.json"
+find $resultdir/json/ -name "agg_${model}_*.json"
