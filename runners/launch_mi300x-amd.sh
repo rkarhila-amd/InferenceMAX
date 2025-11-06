@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-sudo sh -c 'echo 0 > /proc/sys/kernel/numa_balancing'
+#sudo sh -c 'echo 0 > /proc/sys/kernel/numa_balancing'
 
 HF_HUB_CACHE_MOUNT=$HF_HUB_CACHE #"/shareddata/hf_hub_cache_$(hostname)/"
 PORT=8888
@@ -31,7 +31,7 @@ while IFS= read -r line; do
     fi
 done < <(docker logs -f --tail=0 $server_name 2>&1)
 
-if [ ! -f bench_serving ]
+if [ ! -f bench_serving ]; then
   git clone https://github.com/kimbochen/bench_serving.git
 fi
 
@@ -56,8 +56,8 @@ bench_serving/benchmark_serving.py \
 --save-result --percentile-metrics="ttft,tpot,itl,e2el" \
 --result-dir=/workspace/ --result-filename=$RESULT_FILENAME.json
 
-while [ -n "$(docker ps -aq)" ]; do
+#while [ -n "$(docker ps -aq)" ]; do
     docker stop $server_name
     docker network rm $network_name
-    sleep 5
-done
+    sleep 15
+#done

@@ -3,10 +3,10 @@
 set -e
 
 #export HF_TOKEN='*************'
-export HF_HUB_CACHE='/data/hf_home/hub/'
+#export HF_HUB_CACHE='/data/hf_home/hub/'
 export RUNNER_NAME="mi300x-amd"
 
-export HF_HUB_CACHE_MOUNT=/data/
+#export HF_HUB_CACHE_MOUNT=/data/
 export GITHUB_WORKSPACE=$HOME/dev/InferenceMAX_rkarhila
 
 for tp in 8; do 
@@ -22,7 +22,7 @@ for tp in 8; do
     max_model_len=$(( isl + osl ))
 
     export IMAGE=rocm/7.x-preview:rocm7.2_preview_ubuntu_22.04_vlm_0.10.1_instinct_20251029
-    export IMAGESHORTNAME=rocm7.2_preview_ubuntu_22.04_vlm_0.10.1_instinct_20251029
+    export IMAGESHORTNAME=rocm7.2_preview_ubuntu_22.04_vlm_0.10.1_instinct_20251029_exp$N
 
     export MODEL='deepseek-ai/DeepSeek-R1-0528'
     export FRAMEWORK='vllm_dsr1'

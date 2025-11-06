@@ -17,10 +17,10 @@
 # Disable that features to avoid crashes.
 # This is related to the changes in the driver at:
 # https://rocm.docs.amd.com/en/docs-6.4.3/about/release-notes.html#amdgpu-driver-updates
-#version=`rocm-smi --showfw | grep MEC | head -n 1 |  awk '{print $NF}'`
-#if [[ "$version" == "" || $version -lt 177 ]]; then
-#  export HSA_NO_SCRATCH_RECLAIM=1
-#fi
+version=`rocm-smi --showfw | grep MEC | head -n 1 |  awk '{print $NF}'`
+if [[ "$version" == "" || $version -lt 177 ]]; then
+  export HSA_NO_SCRATCH_RECLAIM=1
+fi
 #
 #export SGLANG_USE_AITER=1
 #
@@ -34,7 +34,6 @@
 #--num-continuous-decode-steps=4 \
 #--max-prefill-tokens=196608 \
 #--disable-radix-cache
-
 
 #!/usr/bin/env bash
 
