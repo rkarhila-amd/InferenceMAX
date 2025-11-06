@@ -10,9 +10,9 @@ export HF_HUB_CACHE_MOUNT='/data/'
 export GITHUB_WORKSPACE="$HOME/dev/InferenceMAX_jtoivone"
 
 for tp in 8; do 
-  #for isl_osl in "1024,1024,dsr1" "8192,1024,dsr1" "1024,8192,dsr1"; do
+  for isl_osl in "1024,1024,dsr1" "8192,1024,dsr1" "1024,8192,dsr1"; do
   #for isl_osl in "1024,1024,dsr1" "8192,1024,dsr1"; do
-  for isl_osl in "128,16,dsr1"; do # testing
+  #for isl_osl in "128,16,dsr1"; do # testing
     isl=$( echo ${isl_osl} | cut -f 1 -d ',')
     osl=$( echo ${isl_osl} | cut -f 2 -d ',')
     exp_name=$( echo ${isl_osl} | cut -f 3 -d ',')
