@@ -2,7 +2,7 @@
 
 sudo sh -c 'echo 0 > /proc/sys/kernel/numa_balancing'
 
-HF_HUB_CACHE_MOUNT="/shareddata/hf_hub_cache_$(hostname)/"
+HF_HUB_CACHE_MOUNT=$HF_HUB_CACHE #"/shareddata/hf_hub_cache_$(hostname)/"
 PORT=8888
 
 network_name="bmk-net"
@@ -31,14 +31,21 @@ while IFS= read -r line; do
     fi
 done < <(docker logs -f --tail=0 $server_name 2>&1)
 
-git clone https://github.com/kimbochen/bench_serving.git
+if [ ! -f bench_serving ]
+  git clone https://github.com/kimbochen/bench_serving.git
+fi
 
 set -x
-docker run --rm --network=$network_name --name=$client_name \
--v $GITHUB_WORKSPACE:/workspace/ -w /workspace/ \
--e HF_TOKEN -e PYTHONPYCACHEPREFIX=/tmp/pycache/ \
---entrypoint=python3 \
-$IMAGE \
+# Something weird about the traffic routing.
+# Looks like the client needs to be run in the same container as the
+# server. Let's do that then!
+set -x
+#docker run --rm --network=$network_name --name=$client_name \
+#-v $GITHUB_WORKSPACE:/workspace/ -w /workspace/ \
+#-e HF_TOKEN -e PYTHONPYCACHEPREFIX=/tmp/pycache/ \
+#--entrypoint=python3 \
+#$IMAGE \
+docker exec -it bmk-server python3 \
 bench_serving/benchmark_serving.py \
 --model=$MODEL --backend=vllm --base-url=http://$server_name:$PORT \
 --dataset-name=random \
