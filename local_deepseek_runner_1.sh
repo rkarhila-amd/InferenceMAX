@@ -6,12 +6,13 @@ set -e
 export HF_HUB_CACHE='/data/hf_home/hub/'
 export RUNNER_NAME="mi355x-amd"
 
-export HF_HUB_CACHE_MOUNT=/data/
-export GITHUB_WORKSPACE=$HOME/dev/InferenceMAX_rkarhila
+export HF_HUB_CACHE_MOUNT='/data/'
+export GITHUB_WORKSPACE="$HOME/dev/InferenceMAX_jtoivone"
 
 for tp in 8; do 
   #for isl_osl in "1024,1024,dsr1" "8192,1024,dsr1" "1024,8192,dsr1"; do
-  for isl_osl in "1024,1024,dsr1" "8192,1024,dsr1"; do
+  #for isl_osl in "1024,1024,dsr1" "8192,1024,dsr1"; do
+  for isl_osl in "128,16,dsr1"; do # testing
     isl=$( echo ${isl_osl} | cut -f 1 -d ',')
     osl=$( echo ${isl_osl} | cut -f 2 -d ',')
     exp_name=$( echo ${isl_osl} | cut -f 3 -d ',')
@@ -34,11 +35,14 @@ for tp in 8; do
     #export IMAGE=rocm/vllm-private:355_wip_311_eccac3268_1023
     #export IMAGESHORTNAME=vllm-private-355_wip_311_eccac3268_1023
 
-    export IMAGE=rocm/vllm-private:355_wip_322_3d192ffe9_1026
-    export IMAGESHORTNAME=vllm-private-355_wip_322_3d192ffe9_1026
+    #export IMAGE=rocm/vllm-private:355_wip_322_3d192ffe9_1026
+    #export IMAGESHORTNAME=vllm-private-355_wip_322_3d192ffe9_1026
+
+    export IMAGE=lmsysorg/sglang:v0.5.4.post3-rocm700-mi35x
+    export IMAGESHORTNAME=sglang_v0.5.4.post3-rocm700-mi35x
 
     export MODEL='deepseek-ai/DeepSeek-R1-0528'
-    export FRAMEWORK='vllm_dsr1'
+    export FRAMEWORK='sglang_dsr1'
     export PRECISION='fp8'
     export ISL=${isl}
     export OSL=${osl}
