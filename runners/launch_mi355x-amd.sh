@@ -15,7 +15,7 @@
 # HF_TOKEN
 
 #HF_HUB_CACHE_MOUNT="/nfsdata/hf_hub_cache-1/"  # Temp solution
-HF_HUB_CACHE_MOUNT="/data/"
+#HF_HUB_CACHE_MOUNT="/data/"
 
 PORT=8888
 
@@ -30,7 +30,7 @@ set -x
 docker run --rm -d --ipc=host --shm-size=16g --network=$network_name --name=$server_name \
 --privileged --cap-add=CAP_SYS_ADMIN --device=/dev/kfd --device=/dev/dri --device=/dev/mem \
 --cap-add=SYS_PTRACE --security-opt seccomp=unconfined \
--v $HF_HUB_CACHE_MOUNT:$HF_HUB_CACHE \
+-v $HF_HUB_CACHE:$HF_HUB_CACHE \
 -v $GITHUB_WORKSPACE:/workspace/ -w /workspace/ \
 -e HF_TOKEN -e HF_HUB_CACHE -e MODEL -e TP -e CONC -e MAX_MODEL_LEN -e PORT=$PORT \
 -e ISL -e OSL \
