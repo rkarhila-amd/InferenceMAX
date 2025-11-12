@@ -14,6 +14,8 @@
 
 export SGLANG_USE_AITER=1
 
+export ROCM_QUICK_REDUCE_QUANTIZATION=INT4
+
 python3 -m sglang.launch_server \
     --model-path $MODEL \
     --host=0.0.0.0 \
