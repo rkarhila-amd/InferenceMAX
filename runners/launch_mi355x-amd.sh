@@ -19,11 +19,11 @@
 
 PORT=8888
 
-network_name="bmk-net"
+network_name=host #"bmk-net"
 server_name="bmk-server"
 client_name="bmk-client"
 
-docker network create $network_name
+#docker network create $network_name
 
 # LAUNCH MODEL SERVING
 set -x
@@ -70,12 +70,11 @@ fi
 # Looks like the client needs to be run in the same container as the
 # server. Let's do that then!
 set -x
-#docker run --rm --network=$network_name --name=$client_name \
-#-v $GITHUB_WORKSPACE:/workspace/ -w /workspace/ \
-#-e HF_TOKEN -e PYTHONPYCACHEPREFIX=/tmp/pycache/ \
-#--entrypoint=python3 \
-#$IMAGE \
-docker exec -it bmk-server python3  \
+docker run --rm --network=$network_name --name=$client_name \
+-v $GITHUB_WORKSPACE:/workspace/ -w /workspace/ \
+-e HF_TOKEN -e PYTHONPYCACHEPREFIX=/tmp/pycache/ \
+--entrypoint=python3 \
+lmsysorg/sglang:v0.5.5.post3-rocm700-mi35x \
 bench_serving/benchmark_serving.py \
 --model=$MODEL --backend=sglang --base-url="http://localhost:$PORT" \
 --dataset-name=random \
@@ -94,6 +93,6 @@ fi
 
 #while [ -n "$(docker ps -aq)" ]; do
     docker container rm -f $server_name
-    docker network rm $network_name
+    #docker network rm $network_name
     sleep 15
 #done
