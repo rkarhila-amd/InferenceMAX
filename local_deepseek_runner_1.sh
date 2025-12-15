@@ -42,8 +42,8 @@ for tp in 8; do
     #export IMAGE=lmsysorg/sglang:v0.5.4.post3-rocm700-mi35x
     #export IMAGESHORTNAME=sglang_v0.5.4.post3-rocm700-mi35x
 
-    export IMAGE=lmsysorg/sglang:v0.5.6.post1-rocm700-mi35x
-    export IMAGESHORTNAME=lmsysorg_sglang_v0.5.6.post1-rocm700-mi35x
+    export IMAGE=lmsysorg/sglang:v0.5.6.post2-rocm700-mi35x
+    export IMAGESHORTNAME=lmsysorg_sglang_v0.5.6.post2-rocm700-mi35x
 
     export MODEL='deepseek-ai/DeepSeek-R1-0528'
     export FRAMEWORK='sglang_dsr1'
