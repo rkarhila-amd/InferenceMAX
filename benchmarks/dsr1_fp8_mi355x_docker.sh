@@ -16,6 +16,7 @@ export SGLANG_USE_AITER=1
 export RCCL_MSCCL_ENABLE="0"
 export ROCM_QUICK_REDUCE_QUANTIZATION=INT4
 export USE_ROCM_AITER_ROPE_BACKEND=0
+#export MAX_JOBS=128
 
 python3 -m sglang.launch_server \
     --model-path $MODEL \
